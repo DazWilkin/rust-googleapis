@@ -1,0 +1,11 @@
+[package]
+name = "rust-googleapis"
+version = "0.0.1"
+authors = ["DazWilkin <dazwilkin@users.noreply.github.com>"]
+edition = "2018"
+
+[build-dependencies]
+protoc-rust-grpc = "0.6.2"
+
+[dependencies]
+protobuf = "2.8.2"
