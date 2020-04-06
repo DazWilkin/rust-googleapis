@@ -102,3 +102,9 @@ pub mod google {
 ```
 
 > **NB** There are many other services defined in `googleapis` that are not currently generated.
+
+Revised the above approach to the module declaration.
+
+When the crate is built, by e.g. `git clone`, it won't include the `src/google/**` directories and fails.
+
+By putting `mod.rs` in each subdirectory, these directories will exist on the clone and the build will succeed.
