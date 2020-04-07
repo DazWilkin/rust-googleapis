@@ -5,6 +5,7 @@ authors = ["DazWilkin <dazwilkin@users.noreply.github.com>"]
 edition = "2018"
 
 [build-dependencies]
+git2 = "0.13.1"
 protoc-rust-grpc = "0.6.2"
 
 [dependencies]

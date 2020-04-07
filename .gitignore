@@ -2,6 +2,13 @@
 /protoc-3.11.4-linux-x86_64
 /target
 
-/src/google
+# Ignore everything generated (by protoc) under src/google
+/src/google/**/*.rs
+
+# Ignore everything generated (by protoc) under src/grafeas
+/src/grafeas/**/*.rs
+
+# Except the (currently) manually crafted mod.rs file
+!**/mod.rs
 
 Cargo.lock
