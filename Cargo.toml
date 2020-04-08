@@ -10,3 +10,4 @@ protoc-rust-grpc = "0.6.2"
 
 [dependencies]
 protobuf = "2.8.2"
+grpc = "0.6.2"
