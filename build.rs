@@ -1,4 +1,4 @@
-use git2::Repository;
+use git2::{ErrorCode, Repository};
 use std::path::Path;
 
 pub mod google {
@@ -77,19 +77,19 @@ pub mod google {
     pub fn protobuf() {
         protoc_rust_grpc::run(protoc_rust_grpc::Args {
             out_dir: "src/google/protobuf",
-            includes: &["protoc-3.11.4-linux-x86_64/include"],
+            includes: &["protobuf/src"],
             input: &[
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/any.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/api.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/descriptor.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/duration.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/empty.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/field_mask.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/source_context.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/struct.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/timestamp.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/type.proto",
-                "protoc-3.11.4-linux-x86_64/include/google/protobuf/wrappers.proto",
+                "protobuf/src/google/protobuf/any.proto",
+                "protobuf/src/google/protobuf/api.proto",
+                "protobuf/src/google/protobuf/descriptor.proto",
+                "protobuf/src/google/protobuf/duration.proto",
+                "protobuf/src/google/protobuf/empty.proto",
+                "protobuf/src/google/protobuf/field_mask.proto",
+                "protobuf/src/google/protobuf/source_context.proto",
+                "protobuf/src/google/protobuf/struct.proto",
+                "protobuf/src/google/protobuf/timestamp.proto",
+                "protobuf/src/google/protobuf/type.proto",
+                "protobuf/src/google/protobuf/wrappers.proto",
             ],
             rust_protobuf: true,
             ..Default::default()
@@ -163,11 +163,36 @@ pub mod grafeas {
     }
 }
 fn main() {
-    Repository::clone(
+    match Repository::clone(
+        "https://github.com/protocolbuffers/protobuf.git",
+        Path::new("protobuf"),
+    ) {
+        // If clone succeeds, proceed
+        // Should possibly fold the protoc compilation (e.g. `google::protobuf()`) into this step
+        Ok(_) => println!("Success"),
+        // If clone fails, the only case (currently) of interest is that the cloned directory exists
+        // This is (probably) not an issue and occurs if the build is rerun after the directory is cloned
+        // Proceeding optimistically
+        Err(e) => match e.code() {
+            ErrorCode::Exists => println!("OK"),
+            _ => println!("Unexpected"),
+        },
+    }
+    match Repository::clone(
         "https://github.com/googleapis/googleapis.git",
         Path::new("googleapis"),
-    )
-    .expect("failed to clone");
+    ) {
+        // If clone succeeds, proceed
+        // Should possibly fold the protoc compilations (e.g. `google::api()`, `google::rpc()`) into this step
+        Ok(_) => println!("Success"),
+        // If clone fails, the only case (currently) of interest is that the cloned directory exists
+        // This is (probably) not an issue and occurs if the build is rerun after the directory is cloned
+        // Proceeding optimistically
+        Err(e) => match e.code() {
+            ErrorCode::Exists => println!("OK"),
+            _ => println!("Unexpected"),
+        },
+    }
 
     // Protobuf Well-Known Types
     google::protobuf();
