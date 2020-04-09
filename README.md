@@ -220,7 +220,9 @@ Let's start at the top of the tree and work down:
 
 + `lib.rs` already includes `google` (and `grafeas`) so this is OK
 + `google/mod.rs` includes `api` and `rpc` but not `cloud` so we need to add `pub mod cloud`
-+ we could (should?) create `google/cloud/mod.rs` and `google/cloud/iot/mod.rs` and `googl/cloud/iot/v1/mod.rs`, let's just create the first
++ we must create `google/cloud/mod.rs` and `google/cloud/iot/mod.rs` and `googl/cloud/iot/v1/mod.rs`
+
+Here's the mod definitions wrapped into a single file but do **not** use this approach. When the repo is cloned, directories are only created if they contain files. If a single `mod.rs` is created as shown before, the subdirectories (e.g. `iot`, `iot/v1`) will not be created. This causes errors in `protoc` compilation (and, from experience, these can be difficult to debug). A more robust approach is to create `mod.rs` files in each expected subdirectory. This forces the creation of these directories and the `protoc` compilation should then succeed.
 
 ```rust
 pub mod iot {
@@ -236,11 +238,8 @@ pub mod iot {
 }
 ```
 
-> **NB** I'm unsure of the best practice here but this one file is equivalent
-
 > **NB** We must `use` the rust sources that represent the probobuf `import` files
 
-> **NB** The one weirdness is that the sources reference `super::empty::Empty` (see below)
 
 ### 5. Done
 
