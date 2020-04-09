@@ -175,7 +175,7 @@ fn main() {
         // Proceeding optimistically
         Err(e) => match e.code() {
             ErrorCode::Exists => println!("OK"),
-            _ => println!("Unexpected"),
+            _ => panic!("Unexpected: {:?} {:?}", e.code(), e.message()),
         },
     }
     match Repository::clone(
@@ -190,7 +190,7 @@ fn main() {
         // Proceeding optimistically
         Err(e) => match e.code() {
             ErrorCode::Exists => println!("OK"),
-            _ => println!("Unexpected"),
+            _ => panic!("Unexpected: {:?} {:?}", e.code(), e.message()),
         },
     }
 
