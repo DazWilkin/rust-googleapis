@@ -1,6 +1,6 @@
 [package]
 name = "rust-googleapis"
-version = "0.0.4"
+version = "0.0.5"
 authors = ["DazWilkin <dazwilkin@users.noreply.github.com>"]
 edition = "2018"
 
