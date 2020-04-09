@@ -1,4 +1,8 @@
 
+## v0.0.6
+
++ Missed a few `mod.rs` files to ensure the directory hierarchy is created correctly for `protoc`
+
 ## v0.0.5
 
 + Ensure that `src` tree is fully replicated by ensuring that each level has a file (e.g. `mod.rs`)
