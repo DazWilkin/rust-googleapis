@@ -187,9 +187,11 @@ fn main() {
             ),
         },
     }
+
+    let googleapis = "googleapis";
     match Repository::clone(
         "https://github.com/googleapis/googleapis.git",
-        Path::new("googleapis"),
+        Path::new(googleapis),
     ) {
         // If clone succeeds, proceed
         // Should possibly fold the protoc compilations (e.g. `google::api()`, `google::rpc()`) into this step
@@ -197,7 +199,7 @@ fn main() {
         // This is (probably) not an issue and occurs if the build is rerun after the directory is cloned
         // Proceeding optimistically
         Ok(_) => {
-            println!("[googleapis] cloned");
+            println!("[{}] cloned", googleapis);
             google::api();
             google::rpc();
             google::container();
@@ -206,8 +208,13 @@ fn main() {
             grafeas::v1();
         }
         Err(e) => match e.code() {
-            ErrorCode::Exists => println!("[googleapis] exists"),
-            _ => panic!("[googleapis] unexpected: {:?} {:?}", e.code(), e.message()),
+            ErrorCode::Exists => println!("[{}] exists", googleapis),
+            _ => panic!(
+                "[{}] unexpected: {:?} {:?}",
+                googleapis,
+                e.code(),
+                e.message()
+            ),
         },
     }
 }
