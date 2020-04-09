@@ -163,19 +163,28 @@ pub mod grafeas {
     }
 }
 fn main() {
+    let protobuf = "protobuf";
     match Repository::clone(
         "https://github.com/protocolbuffers/protobuf.git",
-        Path::new("protobuf"),
+        Path::new(protobuf),
     ) {
         // If clone succeeds, proceed
         // Should possibly fold the protoc compilation (e.g. `google::protobuf()`) into this step
-        Ok(_) => println!("Success"),
         // If clone fails, the only case (currently) of interest is that the cloned directory exists
         // This is (probably) not an issue and occurs if the build is rerun after the directory is cloned
         // Proceeding optimistically
+        Ok(_) => {
+            println!("[{}] cloned", protobuf);
+            google::protobuf();
+        }
         Err(e) => match e.code() {
-            ErrorCode::Exists => println!("OK"),
-            _ => panic!("Unexpected: {:?} {:?}", e.code(), e.message()),
+            ErrorCode::Exists => println!("[{}] exists", protobuf),
+            _ => panic!(
+                "[{}] unexpected: {:?} {:?}",
+                protobuf,
+                e.code(),
+                e.message()
+            ),
         },
     }
     match Repository::clone(
@@ -184,26 +193,21 @@ fn main() {
     ) {
         // If clone succeeds, proceed
         // Should possibly fold the protoc compilations (e.g. `google::api()`, `google::rpc()`) into this step
-        Ok(_) => println!("Success"),
         // If clone fails, the only case (currently) of interest is that the cloned directory exists
         // This is (probably) not an issue and occurs if the build is rerun after the directory is cloned
         // Proceeding optimistically
+        Ok(_) => {
+            println!("[googleapis] cloned");
+            google::api();
+            google::rpc();
+            google::container();
+            google::iam();
+            google::cloud::iot();
+            grafeas::v1();
+        }
         Err(e) => match e.code() {
-            ErrorCode::Exists => println!("OK"),
-            _ => panic!("Unexpected: {:?} {:?}", e.code(), e.message()),
+            ErrorCode::Exists => println!("[googleapis] exists"),
+            _ => panic!("[googleapis] unexpected: {:?} {:?}", e.code(), e.message()),
         },
     }
-
-    // Protobuf Well-Known Types
-    google::protobuf();
-
-    google::api();
-    google::rpc();
-
-    google::container();
-    google::iam();
-
-    google::cloud::iot();
-
-    grafeas::v1();
 }
