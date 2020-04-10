@@ -128,7 +128,7 @@ pub mod google {
                 "googleapis/google/type/money.proto",
                 "googleapis/google/type/month.proto",
                 "googleapis/google/type/postal_address.proto",
-                "googleapis/google/type/quarternion.proto",
+                "googleapis/google/type/quaternion.proto",
                 "googleapis/google/type/timeofday.proto",
             ],
             rust_protobuf: true,
@@ -200,11 +200,17 @@ fn main() {
         // Proceeding optimistically
         Ok(_) => {
             println!("[{}] cloned", googleapis);
+
             google::api();
-            google::rpc();
-            google::container();
-            google::iam();
+
             google::cloud::iot();
+
+            google::container();
+
+            google::iam();
+            google::rpc();
+            google::r#type();
+
             grafeas::v1();
         }
         Err(e) => match e.code() {
