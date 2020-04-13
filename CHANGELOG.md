@@ -1,4 +1,8 @@
 
+## v0.0.8
+
++ Included all `google/api` protobufs
+
 ## v0.0.7
 
 + Added Google Common Types (`google/type`) **NB** these are distinct from Google Well-Known Types
