@@ -1,4 +1,8 @@
 
+## v0.0.9
+
++ Exclude `google/api/auth.proto` due to rust keyword collision with `in` part of `JwtLocation`
+
 ## v0.0.8
 
 + Included all `google/api` protobufs
