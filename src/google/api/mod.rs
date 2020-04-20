@@ -22,7 +22,7 @@ pub mod monitored_resource;
 pub mod monitoring;
 pub mod quota;
 pub mod resource;
-pub mod service;
+// pub mod service;
 pub mod source_info;
 pub mod system_parameter;
 pub mod usage;
