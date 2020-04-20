@@ -1,5 +1,5 @@
 pub mod annotations;
-pub mod auth;
+// pub mod auth;
 pub mod backend;
 pub mod billing;
 pub mod client;
