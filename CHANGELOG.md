@@ -2,6 +2,7 @@
 ## v0.0.9
 
 + Exclude `google/api/auth.proto` due to rust keyword collision with `in` part of `JwtLocation`
++ Exclude `google/api/service.proto` due to `google/api/auth.proto` dependency
 
 ## v0.0.8
 
