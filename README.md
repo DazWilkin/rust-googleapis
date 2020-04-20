@@ -37,6 +37,24 @@ src/google
     └── status.rs
 ```
 
+## Test
+
+In order to 'clean room' test the repo, install it into a container:
+
+```bash
+PROJECT="crate-transparency"
+TAG=$(git rev-parse HEAD)
+
+kerfile installs protoc and git clones the repo
+docker build \
+--tag=gcr.io/${PROJECT}/rust-googleapis:${TAG} \
+--file=./Dockerfile.test \
+./src
+```
+
+> **NB** Uses a rust image, installs protoc and git clones the repo
+
+> **NB** Currently fails because `google/api/auth.proto` includes a property `in` that generates `google/api/auth.rs` that includes a rust keyword `in` in `JwtLocation`. The solution is to prefx `in` with a raw string literal `r#in`.
 
 ## Explanation
 
@@ -107,9 +125,7 @@ Replicates, e.g.:
 protoc \
 --proto_path=googleapis \
 --rust_out=src/google/api \
-  googleapis/google/api/annotations.proto \
-  googleapis/google/api/http.proto \
-  googleapis/google/api/httpbody.proto
+  google/api/*.proto
 ```
 
 > **NB** Because this library includes protobuf `message`s only (no gRPC `service`s) we may use `--rust_out`. For gRPC `service`s, we must use `--rust-grpc_out`
